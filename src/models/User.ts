@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-export const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     firstName: {
         type: String,
         require: true,
@@ -29,12 +29,16 @@ export const UserSchema = new mongoose.Schema({
     },
     address: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Address"
+        ref: "Address",
+        require : true
     },
-    products: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Products"
-    },
+    products: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Products",
+            require : true
+        }
+    ],
     additionalDetails : {
         type: mongoose.Schema.Types.ObjectId,
 		required: true,
@@ -47,3 +51,6 @@ export const UserSchema = new mongoose.Schema({
 
     
 } ,  { timestamps: true })
+
+
+export default mongoose.model('User', UserSchema);

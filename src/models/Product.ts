@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-export const Products = new mongoose.Schema({
+ const ProductSchema = new mongoose.Schema({
     title : {
         type: String,
         require: true,
@@ -17,8 +17,16 @@ export const Products = new mongoose.Schema({
         require: true,
         trim: true
     },
+    image : {
+        type : String,
+        require: true,
+        trim: true
+    },
+
     // user : {
     //     type : mongoose.Schema.Types.ObjectId,
     //     ref : "User"
     // }
 }, {timestamps :  true})
+
+export default mongoose.model('Product', ProductSchema);

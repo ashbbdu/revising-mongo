@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
 
 
- const AddressSchema = new mongoose.Schema({
-    street : {
+const ProfileSchema = new mongoose.Schema({
+    gender : {
         type: String,
         require: true,
         trim: true
     },
-    city : {
+    dateOfBirth : {
         type: String,
         require: true,
         trim: true
     },
-    location : {
+    about : {
         type: String,
         require: false,
         trim: true
@@ -22,15 +22,11 @@ import mongoose from "mongoose";
         require: false,
         trim: true
     },
-    country : {
-        type: String,
+    contactNumber : {
+        type: Number,
         require: false,
         trim: true
     }
-    // user : {
-    //     type : mongoose.Schema.Types.ObjectId,
-    //     ref : "User"
-    // }
 })
 
-export default mongoose.model('Address', AddressSchema);
+export default mongoose.model('Profile', ProfileSchema);
