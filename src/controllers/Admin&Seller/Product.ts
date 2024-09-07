@@ -14,7 +14,7 @@ export const createProduct = async (req: Request, res: Response) => {
             price,
         })
 
-        await User.updateOne({ _id: "66dc1bbd0b883f76314fba21" },
+        await User.updateOne({ _id: "66dc40e09223cd1e334254b7" },
             {
                 $push: {
                     products: addProduct._id,
