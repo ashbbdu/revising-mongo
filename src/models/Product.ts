@@ -22,11 +22,12 @@ import mongoose from "mongoose";
         require: true,
         trim: true
     },
-
-    // user : {
-    //     type : mongoose.Schema.Types.ObjectId,
-    //     ref : "User"
-    // }
+    review : [
+        {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "ReviewAndRating"
+        }
+    ]
 }, {timestamps :  true})
 
 export default mongoose.model('Product', ProductSchema);

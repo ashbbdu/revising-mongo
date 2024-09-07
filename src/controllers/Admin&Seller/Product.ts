@@ -33,7 +33,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
 export const getAllProducts = async (req: Request, res: Response) => {
     // const {page , perPage} = req.body;
-    const { page, perpage, search  } = req.query;
+    const { page, perpage, search } = req.query;
     const filter = search
         ? {
             $text: { $search: search } // Using $text index for full-text search
@@ -44,20 +44,20 @@ export const getAllProducts = async (req: Request, res: Response) => {
         const products = await Product.find(
             {
                 $expr: {
-                  $regexMatch: {
-                    input: {
-                      $concat: ["$title" , "$description" ],
+                    $regexMatch: {
+                        input: {
+                            $concat: ["$title", "$description"],
+                        },
+                        regex: search == undefined ? "" : search,
+                        options: "i",
                     },
-                    regex : search == undefined ? "" : search,
-                    options: "i",
-                  },
                 },
-              }
+            }
         ).skip(Number(page)).limit(Number(perpage));
         res.status(200).json({
             message: "Products fetched successfully !",
             products,
-            totalPages : Math.ceil(Number(products.length) / Number(perpage))
+            totalPages: Math.ceil(Number(products.length) / Number(perpage))
         })
     } catch (e) {
         console.log(e)
@@ -65,5 +65,33 @@ export const getAllProducts = async (req: Request, res: Response) => {
 }
 
 
+export const buyProduct = async (req: Request, res: Response) => {
+    const { productId, userId } = req.body;
+    try {
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        if (user.userType === "Customer") {
+            // Update the user by pushing the product ID into the products array
+            await User.updateOne(
+                { _id: userId },
+                { $push: { products: productId } } // Make sure to match the field name with your schema
+            );
+        } else {
+            return res.status(403).json({ message: "User is not a customer" });
+        }
 
+        res.status(200).json({
+            message: "Purchase successful!"
+        });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: "Something went wrong!" });
+    }
+};
 
